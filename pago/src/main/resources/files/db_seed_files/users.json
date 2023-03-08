@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "age": 37,
+    "dob": "1985-03-19",
+    "email": "metalcho@abv.bg",
+    "first_name": "Stefan",
+    "gender": "MALE",
+    "last_name": "Hristov",
+    "nickname": "chef4o",
+    "password": "lsole1814",
+    "role": 4,
+    "avatar_id": null,
+    "town_id": 545
+  }
+]

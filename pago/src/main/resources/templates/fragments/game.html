@@ -1,0 +1,14 @@
+<div class="game-card">
+    <a th:href="@{'/game/' + ${game.name}}">
+        <div id="game-card-icon">
+            <img th:src="@{'/img/gameIcons/' + ${game.iconFile}}" th:alt="${game.name}">
+        </div>
+        <div id="game-card-details">
+            <h2 th:text="${game.name}"></h2>
+            <p th:text="${game.genre}"></p>
+            <div class="rating">
+                <th:fragment th:insert="~{fragments/rating}" th:remove="tag"/>
+            </div>
+        </div>
+    </a>
+</div>

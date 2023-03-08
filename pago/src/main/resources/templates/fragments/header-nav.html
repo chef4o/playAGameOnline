@@ -1,0 +1,36 @@
+<header>
+    <nav>
+        <a class="logo" th:href="@{/}">
+            <i class="fa-solid fa-dice"></i>
+            <span>Play A Game Online</span>
+        </a>
+
+        <a class="nickname" th:if="${@loggedUser.getId() != null}"
+           th:href="@{/user/profile}">
+            <i class="fa-regular fa-user"></i>
+            <span th:text="${@loggedUser.getNickName()}"></span>
+        </a>
+
+        <ul id="nav-bar">
+            <block th:if="${@loggedUser.getId() != null}" th:remove="tag">
+                <li><a th:href="@{/catalog}">Catalog</a></li>
+
+                <li th:if="${@loggedUser.hasAdminRights()}">
+                    <a th:href="@{/admin-panel}">Admin Panel</a>
+                </li>
+
+                <li>
+                    <form method="post" th:action="@{/auth/logout}">
+                        <button id="logout" type="submit">Logout</button>
+                    </form>
+                </li>
+            </block>
+
+            <block th:unless="${@loggedUser.getId() != null}" th:remove="tag">
+                <li><a th:href="@{/catalog}">Catalog</a></li>
+
+                <li><a th:href="@{/auth/login}">Login</a></li>
+            </block>
+        </ul>
+    </nav>
+</header>

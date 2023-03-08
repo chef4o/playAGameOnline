@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:insert="~{fragments/head}"></th:block>
+<body>
+<th:block th:insert="~{fragments/header-nav}"></th:block>
+<main>
+        <h1>Top rated games</h1>
+        <div id="list-container">
+            <th:block th:each="game : ${topGames}" th:insert="~{fragments/game}"></th:block>
+        </div>
+</main>
+<th:block th:insert="~{fragments/footer}"></th:block>
+</body>
+</html>

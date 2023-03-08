@@ -1,0 +1,43 @@
+<td th:if="${game.rating >= 1}">
+    <i class="fa-sharp fa-solid fa-star"></i>
+</td>
+
+<td th:if="${game.rating >= 1.5 && game.rating < 2}">
+    <i class="fa-sharp fa-solid fa-star-half-stroke"></i>
+</td>
+<td th:if="${game.rating >= 2}">
+    <i class="fa-sharp fa-solid fa-star"></i>
+</td>
+<td th:unless="${game.rating >= 2 || game.rating >= 1.5}">
+    <i class="fa-sharp fa-regular fa-star"></i>
+</td>
+
+<td th:if="${game.rating >= 2.5 && game.rating < 3}">
+    <i class="fa-sharp fa-solid fa-star-half-stroke"></i>
+</td>
+<td th:if="${game.rating >= 3}">
+    <i class="fa-sharp fa-solid fa-star"></i>
+</td>
+<td th:unless="${game.rating >= 3 || game.rating >= 2.5}">
+    <i class="fa-sharp fa-regular fa-star"></i>
+</td>
+
+<td th:if="${game.rating >= 3.5 && game.rating < 4}">
+    <i class="fa-sharp fa-solid fa-star-half-stroke"></i>
+</td>
+<td th:if="${game.rating >= 4}">
+    <i class="fa-sharp fa-solid fa-star"></i>
+</td>
+<td th:unless="${game.rating >= 4 || game.rating >= 3.5}">
+    <i class="fa-sharp fa-regular fa-star"></i>
+</td>
+
+<td th:if="${game.rating >= 4.5 && game.rating < 5}">
+    <i class="fa-sharp fa-solid fa-star-half-stroke"></i>
+</td>
+<td th:if="${game.rating == 5}">
+    <i class="fa-sharp fa-solid fa-star"></i>
+</td>
+<td th:unless="${game.rating == 5 || game.rating >= 4.5}">
+    <i class="fa-sharp fa-regular fa-star"></i>
+</td>

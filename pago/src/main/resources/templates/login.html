@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:insert="~{fragments/head}"></th:block>
+<body>
+<th:block th:insert="~{fragments/header-nav}"></th:block>
+<main>
+    <form class="login-form" enctype="multipart/form-data"
+          th:method="post"
+          th:action="@{/auth/login}"
+          th:object="${userLoginInfo}">
+        <h1>Access your gaming account</h1>
+
+        <div class="container">
+            <div class="element">
+                <label for="email"><b>Email</b></label>
+                <input id="email" type="text" name="email" required
+                th:value="*{email}">
+                <div class="error" th:if="${#fields.hasErrors('email')}">
+                    <small>Email must be valid</small>
+                </div>
+            </div>
+
+            <div class="element">
+                <label for="pass"><b>Password</b></label>
+                <input id="pass" type="password" name="password" required>
+                <div class="error" th:if="${#fields.hasErrors('password')}">
+                    <small>Password must be valid</small>
+                </div>
+            </div>
+
+            <div class="element">
+                <button type="submit" class="login-btn">Login</button>
+            </div>
+        </div>
+
+        <div id="register-prompt">
+            <p>Don't have an account yet? Please
+                <a th:href="@{auth/register}">register.</a></p>
+        </div>
+    </form>
+
+</main>
+<th:block th:insert="~{fragments/footer}"></th:block>
+</body>
+</html>
