@@ -1,7 +1,6 @@
 package com.example.pago.services.score;
 
 import com.example.pago.repositories.ScoreRepository;
-import com.example.pago.services.init.DatabaseInitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,9 @@
 package com.example.pago.web.controllers;
 
-import com.example.pago.constant.keyValues;
 import com.example.pago.domains.dto.bindings.UserLoginDto;
 import com.example.pago.domains.dto.bindings.UserRegisterDto;
 import com.example.pago.domains.dto.models.UserDto;
 import com.example.pago.services.user.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 import static com.example.pago.constant.keyValues.*;
 
