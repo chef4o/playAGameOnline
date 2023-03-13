@@ -19,9 +19,11 @@ public interface UserService extends DatabaseInitService {
     UserDto loginUser(UserLoginDto userLoginDto);
     List<UserAdminViewDto> getUsersWithLowerRoleThan(String role);
 
-    Integer getUserRole(Long custId);
+    Integer getUserRole(Long userId);
 
     Optional<UserDto> getById(Long id);
+
+    UserAdminViewDto updateUser(Long id, UserAdminViewDto editedUser);
 
     void logout(HttpSession session);
 }

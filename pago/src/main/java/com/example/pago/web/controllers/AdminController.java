@@ -6,9 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import static com.example.pago.constant.keyValues.*;
@@ -44,7 +42,7 @@ public class AdminController extends BaseController {
 
     @GetMapping("/edit/{id}")
     public ModelAndView getEditAdminPanel(ModelAndView modelAndView,
-                                          @PathVariable String id,
+                                          @PathVariable Long id,
                                           HttpSession session) {
 
         UserAdminViewDto currentUser = getUser(Long.valueOf(session.getAttribute(USER_ID).toString()));
@@ -56,11 +54,23 @@ public class AdminController extends BaseController {
         modelAndView.addObject(POSSIBLE_ROLES, userService
                 .getRolesLowerThan(currentUser.getRole()));
 
-        UserAdminViewDto user = getUser(Long.valueOf(id));
+        UserAdminViewDto user = getUser(id);
 
         modelAndView.addObject(USER_TO_EDIT,user);
 
         return super.view("admin-panel", modelAndView);
+    }
+
+    @PatchMapping("/edit/{id}")
+    @ResponseBody
+    public UserAdminViewDto updateUser(@PathVariable Long id,
+                                   @RequestBody UserAdminViewDto user,
+                                   HttpSession session) {
+
+        UserAdminViewDto currentUser = getUser(Long.valueOf(session.getAttribute(USER_ID).toString()));
+        checkForAdminRights(currentUser);
+
+        return userService.updateUser(id, user);
     }
 
     private UserAdminViewDto getUser(Long id) {

@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.example.pago.constant.filePaths.USERS_JSON_FILE;
@@ -146,9 +147,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getUserRole(Long custId) {
+    public Integer getUserRole(Long userId) {
         return userRepository
-                .findById(custId)
+                .findById(userId)
                 .get()
                 .getRole()
                 .ordinal();
@@ -159,6 +160,29 @@ public class UserServiceImpl implements UserService {
         return this.userRepository
                 .findById(id)
                 .map(user -> modelMapper.map(user, UserDto.class));
+    }
+
+    @Override
+    public UserAdminViewDto updateUser(Long id, UserAdminViewDto editedUser) {
+        User userToUpdate = this.userRepository
+                .findById(id)
+                .orElseThrow(NoSuchElementException::new);
+        if (!userToUpdate.getEmail().equals(editedUser.getEmail())) {
+            userToUpdate.setEmail(editedUser.getEmail());
+        }
+
+        if (!userToUpdate.getNickName().equals(editedUser.getNickName())) {
+            userToUpdate.setNickName(editedUser.getNickName());
+        }
+
+        Role role = modelMapper.map(editedUser.getRole(), Role.class);
+        if (!userToUpdate.getRole().equals(role)) {
+            userToUpdate.setRole(role);
+        }
+
+        this.userRepository.saveAndFlush(userToUpdate);
+
+        return modelMapper.map(userToUpdate, UserAdminViewDto.class);
     }
 
     @Override
