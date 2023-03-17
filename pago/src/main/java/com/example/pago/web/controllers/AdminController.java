@@ -29,13 +29,9 @@ public class AdminController extends BaseController {
                                       HttpSession session) {
 
         UserAdminViewDto currentUser = getUser(Long.valueOf(session.getAttribute(USER_ID).toString()));
-        checkForAdminRights(currentUser);
+        if (accessIsForbidden(modelAndView, currentUser)) return super.redirect("/error");
 
-        modelAndView.addObject(LOWER_LEVEL_USERS, userService
-                .getUsersWithLowerRoleThan(currentUser.getRole()));
-
-        modelAndView.addObject(POSSIBLE_ROLES, userService
-                .getRolesLowerThan(currentUser.getRole()));
+        enrichWithDataForAllManageableUsers(modelAndView, currentUser);
 
         return super.view("admin-panel", modelAndView);
     }
@@ -46,20 +42,14 @@ public class AdminController extends BaseController {
                                           HttpSession session) {
 
         UserAdminViewDto currentUser = getUser(Long.valueOf(session.getAttribute(USER_ID).toString()));
-        checkForAdminRights(currentUser);
+        if (accessIsForbidden(modelAndView, currentUser)) return super.redirect("/error");
 
-        modelAndView.addObject(LOWER_LEVEL_USERS, userService
-                .getUsersWithLowerRoleThan(currentUser.getRole()));
-
-        modelAndView.addObject(POSSIBLE_ROLES, userService
-                .getRolesLowerThan(currentUser.getRole()));
-
-        UserAdminViewDto user = getUser(id);
-
-        modelAndView.addObject(USER_TO_EDIT,user);
+        enrichWithDataForAllManageableUsers(modelAndView, currentUser);
+        importUserForEdit(modelAndView, id);
 
         return super.view("admin-panel", modelAndView);
     }
+
 
     @PatchMapping("/edit/{id}")
     @ResponseBody
@@ -68,7 +58,7 @@ public class AdminController extends BaseController {
                                    HttpSession session) {
 
         UserAdminViewDto currentUser = getUser(Long.valueOf(session.getAttribute(USER_ID).toString()));
-        checkForAdminRights(currentUser);
+        hasAdminRights(currentUser);
 
         return userService.updateUser(id, user);
     }
@@ -80,9 +70,28 @@ public class AdminController extends BaseController {
                 .orElse(null);
     }
 
-    private void checkForAdminRights(UserAdminViewDto user) {
-        if (user == null || !user.hasAdminRights()) {
-            super.redirect("/error");
+    private boolean hasAdminRights(UserAdminViewDto user) {
+        return user != null && user.hasAdminRights();
+    }
+
+    private boolean accessIsForbidden(ModelAndView modelAndView, UserAdminViewDto currentUser) {
+        if (!hasAdminRights(currentUser)) {
+            modelAndView.addObject(ERROR_CODE, "403");
+            return true;
         }
+        return false;
+    }
+
+    private void enrichWithDataForAllManageableUsers(ModelAndView modelAndView, UserAdminViewDto currentUser) {
+        modelAndView
+                .addObject(LOWER_LEVEL_USERS, userService
+                        .getUsersWithLowerRoleThan(currentUser.getRole()))
+                .addObject(POSSIBLE_ROLES, userService
+                        .getRolesLowerThan(currentUser.getRole()));
+    }
+
+    private void importUserForEdit(ModelAndView modelAndView, Long id) {
+        UserAdminViewDto user = getUser(id);
+        modelAndView.addObject(USER_TO_EDIT,user);
     }
 }

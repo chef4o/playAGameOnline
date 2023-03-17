@@ -91,22 +91,19 @@ public class UserServiceImpl implements UserService {
         final UserDto userDto = modelMapper.map(userRegisterDto, UserDto.class);
         userDto.setTown(townService.getTownByName(userRegisterDto.getTown()));
 
-        if (!this.dbExists()) {
-            userDto.setRole(Role.SUPER_ADMIN);
-        } else if (userRegisterDto.hasAllOptional()) {
-            userDto.setRole(Role.NORMAL);
-        } else {
-            userDto.setRole(Role.LIGHT);
-        }
+        setUserRole(userRegisterDto, userDto);
 
         if (userDto.getDateOfBirth() != null) {
+            if (userDto.getDateOfBirth().toString().equals("1900-01-01")) {
+                userDto.setDateOfBirth(null);
+            }
             userDto.setAge(Math
                     .toIntExact(ChronoUnit.YEARS.between(userDto.getDateOfBirth(), LocalDate.now())));
         }
 
-        final User userForInsert = this.modelMapper.map(userDto, User.class);
         UserDto registeredLoggedUser = this.modelMapper
-                .map(this.userRepository.saveAndFlush(userForInsert), UserDto.class);
+                .map(this.userRepository
+                        .saveAndFlush(this.modelMapper.map(userDto, User.class)), UserDto.class);
 
         this.loggedUser
                 .setId(registeredLoggedUser.getId())
@@ -116,6 +113,16 @@ public class UserServiceImpl implements UserService {
                 .setRole(registeredLoggedUser.getRole());
 
         return registeredLoggedUser;
+    }
+
+    private void setUserRole(UserRegisterDto userRegisterDto, UserDto userDto) {
+        if (!this.dbExists()) {
+            userDto.setRole(Role.SUPER_ADMIN);
+        } else if (userRegisterDto.hasAllOptional()) {
+            userDto.setRole(Role.NORMAL);
+        } else {
+            userDto.setRole(Role.LIGHT);
+        }
     }
 
     @Override

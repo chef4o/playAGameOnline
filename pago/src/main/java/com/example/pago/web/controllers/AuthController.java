@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 import static com.example.pago.constant.keyValues.*;
+import static com.example.pago.constant.refPaths.BINDING_RESULT_PATH;
 
 @Controller
 @RequestMapping("/auth")
@@ -29,26 +33,21 @@ public class AuthController extends BaseController {
     }
 
     @GetMapping("/register")
-    public ModelAndView getRegister(ModelAndView modelAndView,
-                                    @ModelAttribute(USER_REGISTER_INFO)
-                                    UserRegisterDto userRegisterInfo) {
-
-        modelAndView.addObject("genders", userService.getAllGenders());
-        modelAndView.addObject(USER_REGISTER_INFO, userRegisterInfo);
-
-        return super.view("register", modelAndView);
+    public ModelAndView getRegister() {
+        return super.view("register");
     }
 
     @PostMapping("/register")
     public ModelAndView postRegister(HttpSession session,
-                                     @Valid @ModelAttribute UserRegisterDto userRegisterInfo,
+                                     @Valid @ModelAttribute(USER_REGISTER_INFO) UserRegisterDto userRegisterInfo,
                                      BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
-                    .addFlashAttribute(USER_REGISTER_INFO, userRegisterInfo)
-                    .addFlashAttribute("org.springframework.validation.BindingResult." + USER_REGISTER_INFO,
+                    .addFlashAttribute(USER_REGISTER_INFO, userRegisterInfo);
+            redirectAttributes
+                    .addFlashAttribute(BINDING_RESULT_PATH + USER_REGISTER_INFO,
                             bindingResult);
 
             return super.redirect("/auth/register");
@@ -60,26 +59,20 @@ public class AuthController extends BaseController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLogin(ModelAndView modelAndView,
-                                 @ModelAttribute(USER_LOGIN_INFO)
-                                 UserLoginDto userLoginInfo) {
-
-        modelAndView.addObject("userLogin", new UserLoginDto());
-        modelAndView.addObject(USER_LOGIN_INFO, userLoginInfo);
-
-        return super.view("login", modelAndView);
+    public ModelAndView getLogin() {
+        return super.view("login");
     }
 
     @PostMapping("/login")
     public ModelAndView postLogin(HttpSession session,
-                                  @Valid @ModelAttribute UserLoginDto userLoginInfo,
+                                  @Valid UserLoginDto userLoginInfo,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
-                    .addFlashAttribute(USER_LOGIN_INFO,userLoginInfo)
-                    .addFlashAttribute("org.springframework.validation.BindingResult." + USER_LOGIN_INFO,
+                    .addFlashAttribute(USER_LOGIN_INFO, userLoginInfo)
+                    .addFlashAttribute(BINDING_RESULT_PATH + USER_LOGIN_INFO,
                             bindingResult);
 
             return super.redirect("/auth/login");
@@ -102,14 +95,18 @@ public class AuthController extends BaseController {
         return super.redirect("/");
     }
 
-    //Model attribute
     @ModelAttribute(name = USER_REGISTER_INFO)
     public UserRegisterDto userRegisterDto() {
         return new UserRegisterDto();
     }
 
-    @ModelAttribute(name = USER_LOGIN_INFO  )
+    @ModelAttribute(name = USER_LOGIN_INFO)
     public UserLoginDto userLoginDto() {
         return new UserLoginDto();
+    }
+
+    @ModelAttribute(name = GENDERS)
+    public List<String> getAllGenders() {
+        return userService.getAllGenders();
     }
 }

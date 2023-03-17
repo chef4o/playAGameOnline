@@ -6,8 +6,7 @@
 <main>
     <form class="register-form" enctype="multipart/form-data"
           th:method="post"
-          th:action="@{/auth/register}"
-          th:object="${userRegisterInfo}">
+          th:action="@{/auth/register}">
         <h1>Register your gaming account</h1>
 
         <div class="container">
@@ -17,44 +16,96 @@
                 <div class="param-group">
                     <div class="param ">
                         <label for="first-name">First name</label>
-                        <input id="first-name" type="text" name="firstName"
-                               placeholder="e.g. 'James'" size="15" required/>
+                        <input id="first-name" type="text"
+                               min="2"
+                               name="firstName"
+                               placeholder="e.g. 'James'" size="15" required
+                               th:value="${userRegisterInfo.firstName}"/>
                     </div>
 
                     <div class="param">
                         <label for="last-name">Last name</label>
-                        <input id="last-name" type="text" name="lastName"
-                               placeholder="e.g. 'Bond'" size="15" required/>
+                        <input id="last-name" type="text"
+                               min="2"
+                               name="lastName"
+                               placeholder="e.g. 'Bond'" size="15" required
+                               th:value="${userRegisterInfo.lastName}"/>
                     </div>
                 </div>
 
+                <div class="form-error">
+                    <small th:if="${#fields.hasErrors('userRegisterInfo.firstName')}">
+                        First name is invalid.
+                    </small>
+                    <small th:unless="${#fields.hasErrors('userRegisterInfo.firstName')}"></small>
+
+                    <small class="right" th:if="${#fields.hasErrors('userRegisterInfo.lastName')}">
+                        Last name is invalid.
+                    </small>
+                    <small th:unless="${#fields.hasErrors('userRegisterInfo.lastName')}"></small>
+                </div>
+
                 <div class="param-group">
-                    <div class="param ">
+                    <div class="param">
                         <label for="nickname">Nickname</label>
-                        <input id="nickname" type="text" name="nickName"
-                               placeholder="must be unique" size="15" required/>
+                        <input id="nickname" type="text"
+                               min="4"
+                               name="nickName"
+                               placeholder="must be unique" size="15" required
+                               th:value="${userRegisterInfo.nickName}"/>
                     </div>
 
                     <div class="param">
                         <label for="email"><b>Email</b></label>
-                        <input id="email" type="text"
-                               placeholder="must be valid" name="email" required>
+                        <input id="email" required type="email"
+                               placeholder="must be valid" name="email"
+                               th:value="${userRegisterInfo.email}">
                     </div>
+                </div>
+
+                <div class="form-error">
+                    <small th:if="${#fields.hasErrors('userRegisterInfo.nickName')}">
+                        Nickname is invalid.
+                    </small>
+                    <small th:unless="${#fields.hasErrors('userRegisterInfo.nickName')}"></small>
+
+                    <small class="right" th:if="${#fields.hasErrors('userRegisterInfo.email')}">
+                        Email is invalid.
+                    </small>
+                    <small th:unless="${#fields.hasErrors('userRegisterInfo.email')}"></small>
                 </div>
 
                 <div class="param-group">
                     <div class="param ">
                         <label for="pass"><b>Password</b></label>
                         <input id="pass" type="password"
-                               placeholder="minimum 8 characters" name="password" required>
+                               min="8"
+                               placeholder="minimum 8 characters" name="password"
+                               required minlength="8"
+                               th:value="${userRegisterInfo.password}">
                     </div>
 
                     <div class="param">
-                        <label for="re-pass"><b>Confirm</b></label>
-                        <input id="re-pass" type="password"
-                               placeholder="retype your password" name="re-pass" required>
+                        <label for="rePass"><b>Confirm</b></label>
+                        <input id="rePass" type="password"
+                               min="8"
+                               placeholder="retype your password" name="rePass" required
+                               th:value="${userRegisterInfo.rePass}">
                     </div>
                 </div>
+
+                <div class="form-error">
+                    <small th:if="${#fields.hasErrors('userRegisterInfo.password')}">
+                        Password is invalid.
+                    </small>
+                    <small th:unless="${#fields.hasErrors('userRegisterInfo.password')}"></small>
+
+                    <small class="right" th:if="${#fields.hasErrors('userRegisterInfo.rePass')}">
+                        Password match is invalid.
+                    </small>
+                    <small th:unless="${#fields.hasErrors('userRegisterInfo.rePass')}"></small>
+                </div>
+
                 <button type="submit" class="register-btn">Register</button>
             </div>
 
@@ -65,22 +116,34 @@
                     <label for="gender">Gender</label>
 
                     <select id="gender" name="gender">
-                        <option th:each="gender : ${genders}"
-                                th:text="${gender}" th:value="${gender}">
+                        <option th:each="gnd : ${genders}"
+                                th:text="${gnd}"
+                                th:value="${gnd}"
+                                th:selected="${gnd == userRegisterInfo.gender}">
                         </option>
                     </select>
+
+                    <div class="form-error"></div>
                 </div>
 
                 <div class="param">
-                    <label for="dob">Date of birth</label>
-                    <input type="date" id="dob" name="dateOfBirth"
-                           min="1900-01-01" value="1990-01-01">
+                    <label for="dateOfBirth">Date of birth</label>
+                    <input type="date" id="dateOfBirth" name="dateOfBirth"
+                           min="1900-01-01"
+                           th:value="${userRegisterInfo.dateOfBirth != null}
+                                       ? ${#temporals.format(userRegisterInfo.dateOfBirth, 'yyyy-MM-dd')}
+                                       : '1900-01-01'">
+
+                    <div class="form-error"></div>
                 </div>
 
                 <div class="param">
                     <label for="town">Town</label>
                     <input id="town" name="town" type="text"
-                           placeholder="where you reside" size="15"/>
+                           placeholder="where you reside" size="15"
+                           th:value="${userRegisterInfo.town}"/>
+
+                    <div class="form-error"></div>
                 </div>
 
                 <div class="param">
@@ -93,6 +156,7 @@
         </div>
     </form>
 </main>
+
 <th:block th:insert="~{fragments/footer}"></th:block>
 </body>
 </html>

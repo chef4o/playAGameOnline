@@ -48,6 +48,7 @@ public class AppBeanConfiguration {
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             }
         });
+
         modelMapper.addConverter(new Converter<String, LocalDateTime>() {
             @Override
             public LocalDateTime convert(MappingContext<String, LocalDateTime> mappingContext) {

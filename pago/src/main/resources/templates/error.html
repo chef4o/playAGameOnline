@@ -4,7 +4,7 @@
 <body>
 <th:block th:insert="~{fragments/header-nav}"></th:block>
 <main>
-    <th:block th:insert="~{fragments/errors-list.html :: fzth}"></th:block>
+    <th:block th:insert="~{fragments/errors-list.html :: ${errorCode}}"></th:block>
 </main>
 <th:block th:insert="~{fragments/footer}"></th:block>
 </body>

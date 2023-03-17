@@ -13,7 +13,7 @@
         <div class="container">
             <div class="element">
                 <label for="email"><b>Email</b></label>
-                <input id="email" type="text" name="email" required
+                <input id="email" type="email" name="email" required
                 th:value="*{email}">
                 <div class="error" th:if="${#fields.hasErrors('email')}">
                     <small>Email must be valid</small>

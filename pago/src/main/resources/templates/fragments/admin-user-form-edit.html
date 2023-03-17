@@ -1,5 +1,5 @@
 <form class="update-form" enctype="multipart/form-data"
-      th:method="post"
+      th:method="patch"
       th:action="@{/auth/login}">
     <div class="param-group">
         <div class="param">
@@ -29,7 +29,7 @@
     </div>
 
     <div class="btn-group">
-        <a class="admin-form-btn" type="submit"
+        <a class="admin-form-btn"
            onclick="return confirm('Are you sure that you want to update the marked user?');"
            th:href="@{'/admin-panel/edit/' + ${user.id}}">Update</a>
         <a class="admin-form-btn"

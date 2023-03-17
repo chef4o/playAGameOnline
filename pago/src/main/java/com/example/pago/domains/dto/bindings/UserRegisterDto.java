@@ -6,14 +6,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDate;
+
 public class UserRegisterDto {
     private String firstName;
     private String lastName;
     private String nickName;
     private String email;
     private String password;
+    private String rePass;
     private String gender;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String town;
     private String avatarPath;
     private boolean hasAllOptional;
@@ -71,6 +74,15 @@ public class UserRegisterDto {
         return this;
     }
 
+    @Length(min = 8)
+    public String getRePass() {
+        return rePass;
+    }
+
+    public void setRePass(String rePass) {
+        this.rePass = rePass;
+    }
+
     public String getGender() {
         return gender;
     }
@@ -80,11 +92,11 @@ public class UserRegisterDto {
         return this;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public UserRegisterDto setDateOfBirth(String dateOfBirth) {
+    public UserRegisterDto setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
         return this;
     }
@@ -110,7 +122,7 @@ public class UserRegisterDto {
     public boolean hasAllOptional() {
         return (this.gender != null &&
                 !this.gender.toUpperCase().equals(Gender.NONE.toString()))
-            && this.dateOfBirth != null
+            && (this.dateOfBirth != null && !this.dateOfBirth.equals("1900-01-01"))
             && this.town != null;
     }
 }

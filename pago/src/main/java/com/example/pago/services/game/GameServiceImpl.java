@@ -53,7 +53,7 @@ public class GameServiceImpl implements GameService {
     }
 
     public List<Game> getAllGames() {
-        return gameRepository.findAll();
+        return gameRepository.findAllByOrderByRatingDesc();
     }
 
     public List<Game> getTop4ByRating() {

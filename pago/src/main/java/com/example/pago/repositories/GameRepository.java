@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
-    List<Game> findAll();
+    List<Game> findAllByOrderByRatingDesc();
     List<Game> findTop4ByOrderByRatingDesc();
 }
