@@ -29,6 +29,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.example.pago.constant.filePaths.USERS_JSON_FILE;
+import static com.example.pago.constant.general.DEFAULT_REG_YEAR;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
         setUserRole(userRegisterDto, userDto);
 
         if (userDto.getDateOfBirth() != null) {
-            if (userDto.getDateOfBirth().toString().equals("1900-01-01")) {
+            if (userDto.getDateOfBirth().toString().equals(DEFAULT_REG_YEAR)) {
                 userDto.setDateOfBirth(null);
             }
             userDto.setAge(Math
