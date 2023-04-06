@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface GameService extends DatabaseInitService {
     List<Game> getAllGames();
-    List<Game> getTop4ByRating();
+    List<Game> getTop5ByRating();
 }

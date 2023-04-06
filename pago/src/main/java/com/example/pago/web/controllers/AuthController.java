@@ -38,7 +38,7 @@ public class AuthController extends BaseController {
 
     @PostMapping("/register")
     public ModelAndView postRegister(HttpSession session,
-                                     @Valid @ModelAttribute(USER_REGISTER_INFO) UserRegisterDto userRegisterInfo,
+                                     @Valid UserRegisterDto userRegisterInfo,
                                      BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes) {
 

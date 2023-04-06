@@ -1,13 +1,14 @@
 package com.example.pago.domains.dto.bindings;
 
 import com.example.pago.domains.enums.Gender;
-import com.example.pago.domains.enums.Role;
+import com.example.pago.validations.matchingPasswords.PasswordMatch;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
+@PasswordMatch(password = "password", rePass = "rePass")
 public class UserRegisterDto {
     private String firstName;
     private String lastName;

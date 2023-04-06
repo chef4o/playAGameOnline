@@ -128,22 +128,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto loginUser(UserLoginDto userLoginDto) {
-        Optional<User> current = userRepository.findByEmail(userLoginDto.getEmail());
-        UserDto validatedUser = current.isPresent()
-                && current.get().getPassword().equals(userLoginDto.getPassword())
-                ? this.modelMapper.map(current.get(), UserDto.class)
-                : new UserDto();
+        UserDto current = getUser(userLoginDto);
 
-        if (validatedUser.exists()) {
-            this.loggedUser
-                    .setId(validatedUser.getId())
-                    .setEmail(validatedUser.getEmail())
-                    .setNickName(validatedUser.getNickName())
-                    .setFirstName(validatedUser.getFirstName())
-                    .setRole(validatedUser.getRole());
-        }
+        this.loggedUser
+                .setId(current.getId())
+                .setEmail(current.getEmail())
+                .setNickName(current.getNickName())
+                .setFirstName(current.getFirstName())
+                .setRole(current.getRole());
 
-        return validatedUser;
+        return current;
+    }
+
+    @Override
+    public UserDto getUser(UserLoginDto userLoginDto) {
+        return this.modelMapper
+                .map(userRepository.findByEmail(userLoginDto.getEmail()), UserDto.class);
     }
 
     @Override

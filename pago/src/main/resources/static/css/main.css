@@ -39,8 +39,8 @@ main h1 {
 main #list-container {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
+    gap: 3vw;
+    width: auto;
 }
 
 footer {

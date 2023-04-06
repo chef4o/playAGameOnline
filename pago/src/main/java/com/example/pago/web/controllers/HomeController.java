@@ -23,7 +23,7 @@ public class HomeController extends BaseController {
 
     @GetMapping
     public ModelAndView getHome(ModelAndView modelAndView) {
-        List<Game> topGames = gameService.getTop4ByRating();
+        List<Game> topGames = gameService.getTop5ByRating();
         modelAndView.addObject("topGames", topGames);
 
         return super.view("index", modelAndView);

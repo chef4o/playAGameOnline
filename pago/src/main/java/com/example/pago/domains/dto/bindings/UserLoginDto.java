@@ -1,9 +1,11 @@
 package com.example.pago.domains.dto.bindings;
 
+import com.example.pago.validations.userExists.ValidateUserLogin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+@ValidateUserLogin
 public class UserLoginDto {
     private String email;
     private String password;

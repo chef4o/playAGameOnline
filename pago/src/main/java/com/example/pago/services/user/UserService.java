@@ -17,6 +17,9 @@ public interface UserService extends DatabaseInitService {
 
     UserDto registerUser(UserRegisterDto userRegisterDto);
     UserDto loginUser(UserLoginDto userLoginDto);
+
+    UserDto getUser(UserLoginDto userLoginDto);
+
     List<UserAdminViewDto> getUsersWithLowerRoleThan(String role);
 
     Integer getUserRole(Long userId);

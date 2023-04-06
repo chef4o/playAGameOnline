@@ -50,12 +50,11 @@ public class AdminController extends BaseController {
         return super.view("admin-panel", modelAndView);
     }
 
-
     @PatchMapping("/edit/{id}")
     @ResponseBody
     public UserAdminViewDto updateUser(@PathVariable Long id,
-                                   @RequestBody UserAdminViewDto user,
-                                   HttpSession session) {
+                                       @RequestBody UserAdminViewDto user,
+                                       HttpSession session) {
 
         UserAdminViewDto currentUser = getUser(Long.valueOf(session.getAttribute(USER_ID).toString()));
         hasAdminRights(currentUser);
@@ -92,6 +91,6 @@ public class AdminController extends BaseController {
 
     private void importUserForEdit(ModelAndView modelAndView, Long id) {
         UserAdminViewDto user = getUser(id);
-        modelAndView.addObject(USER_TO_EDIT,user);
+        modelAndView.addObject(USER_TO_EDIT, user);
     }
 }
